@@ -87,4 +87,4 @@ interaction:
 provision:
   - dip compose down --volumes
   - dip compose up -d postgres
-  - dip sh -c ./bin/stup
+  - dip sh -c ./bin/setup
