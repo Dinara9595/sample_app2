@@ -1,0 +1,54 @@
+version: '3.8'
+# What is x-{app}? https://docs.docker.com/v17.09/compose/compose-file/#extension-fields
+x-app: &app
+  build:
+    context: .
+    dockerfile: Dockerfile.dev
+  environment: &env
+    RAILS_ENV: ${RAILS_ENV:-development}
+  tmpfs:
+    - /tmp
+
+x-backend: &backend
+  <<: *app
+  stdin_open: true
+  tty: true
+  volumes:
+    - ./..:/app:cached
+    - rails_cache:/app/tmp/cache
+    - bundle:/usr/local/bundle
+    - .psqlrc:/root/.psqlrc:ro
+  environment:
+    <<: *env
+    DATABASE_URL: postgres://postgres:VAVxNnWW7PamKPVUCYpdbRLpHVNfFNLw2dMejULGE4B44ERJ@postgres:5432
+    BOOTSNAP_CACHE_DIR: /bundle/bootsnap
+    WEB_CONCURRENCY: 1
+    HISTFILE: /app/log/.bash_history
+    PSQL_HISTFILE: /app/log/.psql_history
+    EDITOR: vi
+  depends_on:
+    - postgres
+
+services:
+  rails:
+    <<: *backend
+    command: bundle exec rails server -b 0.0.0.0
+    ports:
+      - '3000:3000'
+
+  postgres:
+    image: postgres:11-alpine
+    volumes:
+      - .psqlrc:/root/.psqlrc:ro
+      - postgres:/var/lib/postgresql/data:delegated
+      - ./../../log:/root/log:delegated
+    environment:
+      POSTGRES_PASSWORD: VAVxNnWW7PamKPVUCYpdbRLpHVNfFNLw2dMejULGE4B44ERJ
+      PSQL_HISTFILE: /root/log/.psql_history
+    ports:
+      - 5432
+
+volumes:
+  postgres:
+  bundle:
+  rails_cache:
