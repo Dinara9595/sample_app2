@@ -54,6 +54,9 @@ end
 group :production do
   gem 'pg',             '0.17.1'
   gem 'rails_12factor', '0.0.2'
+  # Added at 2021-05-11 16:38:28 +0000 by root:
+  gem "puma", "= 2.11.1"
 end
 # Added at 2021-05-09 23:31:39 +0000 by root:
 gem "bcrypt", "= 3.1.7"
+
