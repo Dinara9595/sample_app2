@@ -60,3 +60,12 @@ end
 # Added at 2021-05-09 23:31:39 +0000 by root:
 gem "bcrypt", "= 3.1.7"
 
+
+# Added at 2021-05-17 17:46:30 +0000 by root:
+gem "faker", "= 1.4.2"
+
+# Added at 2021-05-17 18:08:06 +0000 by root:
+gem "will_paginate", "= 3.0.7"
+
+# Added at 2021-05-17 18:13:28 +0000 by root:
+gem "bootstrap-will_paginate", "= 0.0.10"
