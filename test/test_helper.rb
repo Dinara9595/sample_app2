@@ -17,7 +17,7 @@ class ActiveSupport::TestCase
   end
 
   # Осуществляет вход тестового пользователя
-  def log_in_as(user, options = {})
+  def log_in_as(user, options = {} )
     password    = options[:password]    || 'password'
     remember_me = options[:remember_me] || '1'
     if integration_test?
