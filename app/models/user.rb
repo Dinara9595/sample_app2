@@ -10,30 +10,32 @@ class User < ActiveRecord::Base
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
 
-  class << self
-    # Возвращает дайджест данной строки
-    def digest(string)
-      cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
-      BCrypt::Password.create(string, cost: cost)
-    end
+
+  # Возвращает дайджест данной строки
+  def User.digest(string)
+    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
+             BCrypt::Engine.cost
+    BCrypt::Password.create(string, cost: cost)
+  end
 
     # Возвращает случайный токен
-    def new_token
+    def User.new_token
       SecureRandom.urlsafe_base64
     end
-  end
+
 
   # Запоминает пользователя в базе данных для использования в постоянной сессии.
   def remember
     self.remember_token = User.new_token
-      update_attribute(:remember_digest, User.digest(remember_token))
+    update_attribute(:remember_digest, User.digest(remember_token))
   end
 
   # Возвращает true, если предоставленный токен совпадает с дайджестом.
   def authenticated?(attribute, token)
-    digest = self.send("#{attribute}_digest")
+    digest = send("#{attribute}_digest")
     return false if digest.nil?
-    BCrypt::Password.new(digest).is_password?(token)
+    bcrypt_digest = BCrypt::Password.new(digest)
+    bcrypt_digest == token
   end
 
   # Забывает пользователя
@@ -78,7 +80,7 @@ class User < ActiveRecord::Base
 
   # Создает и присваивает активационнй токен и дайджест.
   def create_activation_digest
-    self.activation_token = User.new_token
+    self.activation_token  = User.new_token
     self.activation_digest = User.digest(activation_token)
   end
 end
