@@ -69,3 +69,12 @@ gem "will_paginate", "= 3.0.7"
 
 # Added at 2021-05-17 18:13:28 +0000 by root:
 gem "bootstrap-will_paginate", "= 0.0.10"
+
+# Added at 2021-06-25 15:33:57 +0000 by root:
+gem "carrierwave", "= 0.10.0"
+
+# Added at 2021-06-25 15:35:07 +0000 by root:
+gem "mini_magick", "= 3.8.0"
+
+# Added at 2021-06-25 15:35:35 +0000 by root:
+gem "fog", "= 1.36.0"

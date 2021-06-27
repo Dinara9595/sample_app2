@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
                                     uniqueness: { case_sensitive: false }
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
-
+  has_many :microposts, dependent: :destroy
 
   # Возвращает дайджест данной строки
   def User.digest(string)
@@ -67,6 +67,12 @@ class User < ActiveRecord::Base
   #Возвращает true, если истек срок давности ссылки для сброса пароля .
   def password_reset_expired?
     reset_sent_at < 2.hours.ago
+  end
+
+
+  #Определяет прото-ленту
+  def feed
+    Micropost.where("user_id = ?", id)
   end
 
   private
